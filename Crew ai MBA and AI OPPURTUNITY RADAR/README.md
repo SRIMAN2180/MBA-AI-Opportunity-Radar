@@ -1,32 +1,32 @@
-# MBA + AI Opportunity Radar
 
+```
+ MBA + AI Opportunity Radar
 Lightweight local Python app that scrapes opportunities/courses/news, stores results in `bcom_ai_events.json`, and generates approval-gated weekly email digests.
 
 ## Features
+* **FastAPI backend** with required endpoints:
+  * `/events`
+  * `/courses`
+  * `/refresh`
+  * `/preview-email`
+  * `/approve-send`
+* **APScheduler** weekly job for automated refresh + digest generation
+* **CrewAI-compatible dual agent structure:**
+  * Researcher (Web Agent)
+  * Coder (Dev Agent)
+* **Local JSON persistence** (`bcom_ai_events.json`) + optional SQLite persistence
+* **Streamlit local frontend** for viewing/filtering/refreshing and email approval/send
+* **Email safety gate:**
+  ```python
+  if not user_approved:
+      print("Email sending cancelled until approval.")
+      return
 
-- FastAPI backend with required endpoints:
-  - `/events`
-  - `/courses`
-  - `/refresh`
-  - `/preview-email`
-  - `/approve-send`
-- APScheduler weekly job for automated refresh + digest generation
-- CrewAI-compatible dual agent structure:
-  - `Researcher (Web Agent)`
-  - `Coder (Dev Agent)`
-- Local JSON persistence (`bcom_ai_events.json`) + optional SQLite persistence
-- Streamlit local frontend for viewing/filtering/refreshing and email approval/send
-- Email safety gate:
-
-```python
-if not user_approved:
-    print("Email sending cancelled until approval.")
-    return
 ```
 
 ## Project Structure
 
-```
+```text
 app/
   agents/
   api/
@@ -35,36 +35,75 @@ app/
   scraper/
   storage/
 frontend/
+
 ```
 
-## Setup
+## First-time setup (only if not done yet)
 
-1. Create a virtualenv and install dependencies:
+Open your terminal, navigate to the project directory, and run the following commands:
 
-```bash
+```powershell
+cd path/to/mba-ai-opportunity-radar
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
+copy .env.example .env
+
 ```
 
-2. Copy `.env.example` to `.env` and fill SMTP fields if real sending is needed.
+Note: Open your new `.env` file and fill in the SMTP fields if real email sending is needed.
 
 ## Run Locally
 
-Backend:
+This application requires running the backend and frontend simultaneously.
 
-```bash
-uvicorn app.main:app --reload
+### Terminal 1 — Backend (FastAPI + Swagger)
+
+```powershell
+cd path/to/mba-ai-opportunity-radar
+.\.venv\Scripts\Activate.ps1
+python -m uvicorn app.main:app --reload
+
 ```
 
-Frontend:
+You should see: `Uvicorn running on http://127.0.0.1:8000`
 
-```bash
+*Open in browser:*
+
+* API docs (Swagger): https://www.google.com/search?q=http://127.0.0.1:8000/docs
+* Health check: https://www.google.com/search?q=http://127.0.0.1:8000
+*(Leave this terminal running)*
+
+### Terminal 2 — Frontend (Streamlit)
+
+Open a *new* PowerShell window:
+
+```powershell
+cd path/to/mba-ai-opportunity-radar
+.\.venv\Scripts\Activate.ps1
 streamlit run frontend/app.py
+
 ```
+
+Streamlit will open in your browser (usually http://localhost:8501).
+*(Leave this terminal running too)*
+
+## Typical Workflow
+
+1. Start **backend** first (Terminal 1).
+2. Start **frontend** second (Terminal 2).
+3. In Streamlit, click **Refresh Scrape**.
+4. View **Events** / **Courses** tabs.
+5. Use **Preview Weekly Email** → **Approve + Send** when ready.
 
 ## API Flow
 
-1. Weekly scheduler triggers scrape (`/refresh` logic)
-2. JSON file `bcom_ai_events.json` generated/updated
-3. Email preview available via `/preview-email`
-4. User approval required using `/approve-send` with `approved=true`
-5. Only after approval, email send function runs
+* Weekly scheduler triggers scrape (`/refresh` logic).
+* JSON file `bcom_ai_events.json` is generated/updated.
+* Email preview available via `/preview-email`.
+* User approval required using `/approve-send` with `approved=true`.
+* Only after approval, the email send function runs.
+
+```
+
+```
