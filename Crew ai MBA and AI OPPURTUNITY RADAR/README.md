@@ -52,6 +52,17 @@ copy .env.example .env
 ```
 
 Note: Open your new `.env` file and fill in the SMTP fields if real email sending is needed.
+OPENAI_API_KEY=
+OPENROUTER_API_KEY=
+EXA_API_KEY=
+
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=
+SMTP_PASSWORD=
+SENDER_EMAIL=
+RECIPIENT_EMAIL=
+
 
 ## Run Locally
 
