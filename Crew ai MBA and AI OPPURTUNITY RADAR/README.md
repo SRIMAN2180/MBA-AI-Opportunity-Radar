@@ -51,7 +51,7 @@ copy .env.example .env
 
 ```
 
-Note: Open your new `.env` file and fill in the SMTP fields if real email sending is needed.
+Note: Open your new `.env` file and fill in the API keys and SMTP fields if real email sending is needed.
 OPENAI_API_KEY=
 OPENROUTER_API_KEY=
 EXA_API_KEY=
